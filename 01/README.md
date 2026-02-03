@@ -19,6 +19,7 @@
 
 - on main.tf line 30, in resource "docker_container" "nginx": | 30:   name  = "example_${random_password.random_string_FAKE.resulT}"
 Неправильно указаны random_string_FAKE, _FAKE - лишнее. А так же resulT - result.
+<img width="1582" height="1341" alt="2" src="https://github.com/user-attachments/assets/22211388-18cd-4cab-88d6-96ebb0116a47" />
 
 
 
@@ -32,6 +33,7 @@
 ```
 terraform destroy
 ```
+<img width="1953" height="1434" alt="4" src="https://github.com/user-attachments/assets/f72f7d84-a44f-4e13-b940-622a619314c8" />
 
 
 
@@ -117,6 +119,7 @@ docker ps
 ```
 docker exec -it 211654eb0c4d env | grep MYSQL
 ```
+<img width="1634" height="1439" alt="5" src="https://github.com/user-attachments/assets/0c7acf30-c067-483f-8d99-beb7366a3be7" />
 
 
 ---
