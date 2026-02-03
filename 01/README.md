@@ -22,16 +22,17 @@
 
 
 
-
 4. Объясните своими словами, в чём может быть опасность применения ключа -auto-approve.
 - Опасно: тераформ без чтения применит изменения. может удалить и пересобрать.
 - Допустимо: повторное применение известных изменений, локальная разработка, ci/cd пайплайны.
+
 
 
 5. Уничтожьте созданные ресурсы с помощью terraform. Убедитесь, что все ресурсы удалены. Приложите содержимое файла terraform.tfstate.
 ```
 terraform destroy
 ```
+
 
 
 6. Объясните, почему при этом не был удалён docker-образ nginx:latest.
@@ -41,5 +42,83 @@ https://library.tf/providers/kreuzwerker/docker/latest/docs/resources/image
 keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 
 
+
+---
+---
+
+### Задание 2
+
+1. Создайте в облаке ВМ. Сделайте это через web-консоль, чтобы не слить по незнанию токен от облака в github(это тема следующей лекции). Если хотите - попробуйте сделать это через terraform, прочитав документацию yandex cloud. Используйте файл personal.auto.tfvars и гитигнор или иной, безопасный способ передачи токена!
+```
+yc compute instance create \
+  --name vm-2 \
+  --zone ru-central1-b \
+  --platform standard-v3 \
+  --network-interface subnet-name=swarm-subnet,nat-ip-version=ipv4 \
+  --preemptible \
+  --create-boot-disk image-folder-id=standard-images,image-family=ubuntu-2404-lts,type=network-hdd,size=10GB \
+  --cores=2 --memory=4GB --core-fraction=20 \
+  --ssh-key ~/.ssh/id_rsa.pub
+```
+
+
+
+2. Подключитесь к ВМ по ssh и установите стек docker.
+```
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+
+
+3. Найдите в документации docker provider способ настроить подключение terraform на вашей рабочей станции к remote docker context вашей ВМ через ssh.
+```
+docker context create yc-vm --docker "host=ssh://yc-user@158.160.14.41"
+```
+```
+docker context ls
+```
+```
+docker context use yc-vm
+```
+
+
+
+4. Используя terraform и remote docker context, скачайте и запустите на вашей ВМ контейнер mysql:8 на порту 127.0.0.1:3306, передайте ENV-переменные. Сгенерируйте разные пароли через random_password и передайте их в контейнер, используя интерполяцию из примера с nginx.(name  = "example_${random_password.random_string.result}" , двойные кавычки и фигурные скобки обязательны!)
+- Код в директории "terraform-docker-mysql".
+```
+terraform init
+```
+```
+terraform validate
+```
+```
+terraform plan
+```
+```
+terraform apply
+```
+`yes`
+
+
+
+5. Зайдите на вашу ВМ , подключитесь к контейнеру и проверьте наличие секретных env-переменных с помощью команды env. Запишите ваш финальный код в репозиторий.
+```
+docker ps
+```
+```
+docker exec -it 211654eb0c4d env | grep MYSQL
+```
+
+
+---
 ---
 ---
