@@ -3,12 +3,12 @@
 1. Изучите файл **.gitignore**. В каком terraform-файле, согласно этому .gitignore, допустимо сохранить личную, секретную информацию?(логины,пароли,ключи,токены итд)
 - personal.auto.tfvars
 
-
+---
 
 2. Выполните код проекта. Найдите  в state-файле секретное содержимое созданного ресурса **random_password**, пришлите в качестве ответа конкретный ключ и его значение.
 - "result": "j1G6GrdpwGtlDwpQ",
 
-
+---
 
 3. Раскомментируйте блок кода, примерно расположенный на строчках 29–42 файла main.tf. Выполните команду terraform validate. Объясните, в чём заключаются намеренно допущенные ошибки. Исправьте их.
 - on main.tf line 23, in resource "docker_image": │ 23: resource "docker_image"
@@ -21,13 +21,13 @@
 Неправильно указаны random_string_FAKE, _FAKE - лишнее. А так же resulT - result.
 <img width="1582" height="1341" alt="2" src="https://github.com/user-attachments/assets/22211388-18cd-4cab-88d6-96ebb0116a47" />
 
-
+---
 
 4. Объясните своими словами, в чём может быть опасность применения ключа -auto-approve.
 - Опасно: тераформ без чтения применит изменения. может удалить и пересобрать.
 - Допустимо: повторное применение известных изменений, локальная разработка, ci/cd пайплайны.
 
-
+---
 
 5. Уничтожьте созданные ресурсы с помощью terraform. Убедитесь, что все ресурсы удалены. Приложите содержимое файла terraform.tfstate.
 ```
@@ -35,7 +35,7 @@ terraform destroy
 ```
 <img width="1953" height="1434" alt="4" src="https://github.com/user-attachments/assets/f72f7d84-a44f-4e13-b940-622a619314c8" />
 
-
+---
 
 6. Объясните, почему при этом не был удалён docker-образ nginx:latest.
 причина в `keep_locally = true`, этот параметр говорит тераформу не удаляться при `terraform destroy`, а остаётся в локальном кэше.
@@ -45,6 +45,7 @@ keep_locally (Boolean) If true, then the Docker image won't be deleted on destro
 
 
 
+---
 ---
 ---
 
@@ -63,7 +64,7 @@ yc compute instance create \
   --ssh-key ~/.ssh/id_rsa.pub
 ```
 
-
+---
 
 2. Подключитесь к ВМ по ssh и установите стек docker.
 ```
@@ -79,7 +80,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-
+---
 
 3. Найдите в документации docker provider способ настроить подключение terraform на вашей рабочей станции к remote docker context вашей ВМ через ssh.
 ```
@@ -92,7 +93,7 @@ docker context ls
 docker context use yc-vm
 ```
 
-
+---
 
 4. Используя terraform и remote docker context, скачайте и запустите на вашей ВМ контейнер mysql:8 на порту 127.0.0.1:3306, передайте ENV-переменные. Сгенерируйте разные пароли через random_password и передайте их в контейнер, используя интерполяцию из примера с nginx.(name  = "example_${random_password.random_string.result}" , двойные кавычки и фигурные скобки обязательны!)
 - Код в директории "terraform-docker-mysql".
@@ -110,7 +111,7 @@ terraform apply
 ```
 `yes`
 
-
+---
 
 5. Зайдите на вашу ВМ , подключитесь к контейнеру и проверьте наличие секретных env-переменных с помощью команды env. Запишите ваш финальный код в репозиторий.
 ```
