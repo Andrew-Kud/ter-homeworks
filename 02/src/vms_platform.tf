@@ -30,6 +30,15 @@ variable "vm_web_preemptible" {
   default     = true
 }
 
+variable "vm_web_zone" {
+  type    = string
+  default = "ru-central1-a"
+}
+
+variable "default_web_cidr" {
+  type        = list(string)
+  default     = ["10.0.1.0/24"]
+}
 
 #
 # --- DB VW ---
@@ -66,4 +75,9 @@ variable "vm_db_preemptible" {
 variable "vm_db_zone" {
   type    = string
   default = "ru-central1-b"
+}
+
+variable "default_db_cidr" {
+  type        = list(string)
+  default     = ["10.0.2.0/24"]
 }

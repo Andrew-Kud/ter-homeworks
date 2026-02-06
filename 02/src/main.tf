@@ -3,16 +3,16 @@ resource "yandex_vpc_network" "develop" {
 }
 resource "yandex_vpc_subnet" "develop_a" {
   name           = "${var.vpc_name}-a"
-  zone           = var.default_zone
+  zone           = var.vm_web_zone
   network_id     = yandex_vpc_network.develop.id
-  v4_cidr_blocks = var.default_cidr
+  v4_cidr_blocks = var.default_web_cidr
 }
 
 resource "yandex_vpc_subnet" "develop_b" {
   name           = "${var.vpc_name}-b"
-  zone           = "ru-central1-b"
+  zone           = var.vm_db_zone
   network_id     = yandex_vpc_network.develop.id
-  v4_cidr_blocks = ["10.0.2.0/24"]
+  v4_cidr_blocks = var.default_db_cidr
 }
 
 
