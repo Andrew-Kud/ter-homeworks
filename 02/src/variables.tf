@@ -33,6 +33,42 @@ variable "vpc_name" {
 
 variable "vms_ssh_root_key" {
   type        = string
-  default     = "<your_ssh_ed25519_key>"
   description = "ssh-keygen -t ed25519"
+}
+
+#service_account
+variable "authorized_key" {
+  type = string
+}
+
+#yandex_compute_image
+variable "vm_web_image_family" {
+  type        = string
+  default     = "ubuntu-2404-lts"
+}
+
+#yandex_compute_instance
+variable "vm_web_name" {
+  type        = string
+  default     = "netology-develop-platform-web"
+}
+
+variable "vm_web_platform_id" {
+  type        = string
+  default     = "standard-v3"
+}
+
+variable "vm_web_resources" {
+  type = map(number)
+  default = {
+    cores         = 2
+    memory        = 1
+    core_fraction = 20
+#    size          = 5
+  }
+}
+
+variable "vm_web_preemptible" {
+  type        = bool
+  default     = true
 }
