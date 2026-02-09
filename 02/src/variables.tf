@@ -41,17 +41,23 @@ variable "vms_resources" {
     cores         = number
     memory        = number
     core_fraction = number
+    size          = number
+    type          = string
   }))
   default = {
     web = {
       cores         = 2
       memory        = 1
       core_fraction = 20
+      size = 10
+      type="network-hdd"
     }
     db = {
       cores         = 2
       memory        = 2
       core_fraction = 20
+      size = 10
+      type="network-ssd"
     }
   }
 }

@@ -31,6 +31,8 @@ resource "yandex_compute_instance" "web" {
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.web-image.image_id
+      type     = var.vms_resources.web.type
+      size     = var.vms_resources.web.size
     }
   }
   scheduling_policy {
@@ -41,7 +43,7 @@ resource "yandex_compute_instance" "web" {
     nat       = true
   }
 
-  metadata = var.vms_metadata
+  metadata = local.vms_metadata
 
 }
 
@@ -61,6 +63,8 @@ resource "yandex_compute_instance" "db" {
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.db-image.image_id
+      type     = var.vms_resources.db.type
+      size     = var.vms_resources.db.size
     }
   }
   scheduling_policy {
@@ -71,6 +75,6 @@ resource "yandex_compute_instance" "db" {
     nat       = true
   }
 
-  metadata = var.vms_metadata
+  metadata = local.vms_metadata
 
 }
