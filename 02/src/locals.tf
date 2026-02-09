@@ -3,3 +3,11 @@ locals {
 
   db_vm_name  = "${var.vpc_name}-db-${var.vm_web_platform_id}"
 }
+
+variable "vms_metadata" {
+  type = map(string)
+  default = {
+    serial-port-enable = "true"
+    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
+  }
+}
