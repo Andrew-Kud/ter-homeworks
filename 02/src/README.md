@@ -12,6 +12,8 @@
 - Прерываемая + 5% ЦП = самая дешёвая ВМ.
 Ответ - экономия.
 
+<img width="2556" height="1440" alt="1" src="https://github.com/user-attachments/assets/358d0e94-8075-4bf4-8728-c0b3249e225e" />
+
 
 ---
 ---
@@ -21,17 +23,33 @@
 ---
 ### Задание 3
 
+<img width="2557" height="1438" alt="3-1" src="https://github.com/user-attachments/assets/67722a49-b9ab-44a5-bdd4-616ffee2086b" />
+
+<img width="2560" height="1438" alt="3-2" src="https://github.com/user-attachments/assets/89a691e5-8c9d-4369-9f05-7b949fab3c4f" />
+
+
 ---
 ---
 ### Задание 4
+
+<img width="2559" height="1439" alt="4" src="https://github.com/user-attachments/assets/615f6b90-15ba-4cf7-9602-32acb319de8a" />
+
 
 ---
 ---
 ### Задание 5
 
+<img width="2560" height="1439" alt="5" src="https://github.com/user-attachments/assets/4e3902dd-c452-4601-bb69-670057cd9f98" />
+
+
 ---
 ---
 ### Задание 6
+
+<img width="2559" height="1439" alt="6-1" src="https://github.com/user-attachments/assets/ca754309-5e11-4366-bf67-5d904f832f91" />
+
+<img width="2557" height="1439" alt="6-2" src="https://github.com/user-attachments/assets/be244724-17c2-4c75-acb6-a1e677a359d0" />
+
 
 ---
 ---
@@ -126,6 +144,16 @@ variable "test" {
 var.test[0]["dev1"][0]
 ```
 
+<img width="1280" height="1434" alt="8" src="https://github.com/user-attachments/assets/4096cf04-2ddc-4b6c-8f10-6657a5ae4f3c" />
 
+
+---
+---
+### Задание 9
+
+<img width="2559" height="1440" alt="9" src="https://github.com/user-attachments/assets/5980a1bc-7e50-4eaf-ac8e-2f398382378d" />
+
+
+---
 ---
 ---
