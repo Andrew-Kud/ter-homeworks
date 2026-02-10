@@ -1,11 +1,16 @@
+#.1
 resource "yandex_vpc_network" "develop" {
   name = var.vpc_name
 }
+
+
+#.2
 resource "yandex_vpc_subnet" "develop_a" {
   name           = "${var.vpc_name}-a"
   zone           = var.vm_web_zone
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = var.default_web_cidr
+  route_table_id = yandex_vpc_route_table.nat_rt.id
 }
 
 resource "yandex_vpc_subnet" "develop_b" {
@@ -13,10 +18,29 @@ resource "yandex_vpc_subnet" "develop_b" {
   zone           = var.vm_db_zone
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = var.default_db_cidr
+  route_table_id = yandex_vpc_route_table.nat_rt.id
 }
 
 
-# --- vw web ---
+#.3
+resource "yandex_vpc_gateway" "nat_gateway" {
+  name = "${var.vpc_name}-nat"
+  shared_egress_gateway {}
+}
+
+
+#.4
+resource "yandex_vpc_route_table" "nat_rt" {
+  network_id      = yandex_vpc_network.develop.id
+  name            = "${var.vpc_name}-nat-rt"
+  static_route {
+    destination_prefix = "0.0.0.0/0"
+    gateway_id         = yandex_vpc_gateway.nat_gateway.id
+  }
+}
+
+
+#.5-1
 data "yandex_compute_image" "web-image" {
   family = var.vm_web_image_family
 }
@@ -40,14 +64,14 @@ resource "yandex_compute_instance" "web" {
   }
   network_interface {
     subnet_id = yandex_vpc_subnet.develop_a.id
-    nat       = true
+    nat       = false
   }
 
   metadata = local.vms_metadata
-
 }
 
-# --- vw db ---
+
+#.5-2
 data "yandex_compute_image" "db-image" {
   family = var.vm_db_image_family
 }
@@ -72,9 +96,8 @@ resource "yandex_compute_instance" "db" {
   }
   network_interface {
     subnet_id = yandex_vpc_subnet.develop_b.id
-    nat       = true
+    nat       = false
   }
 
   metadata = local.vms_metadata
-
 }
