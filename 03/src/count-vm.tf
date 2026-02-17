@@ -1,21 +1,26 @@
+data "yandex_compute_image" "default" {
+  family = var.vm_image_family
+}
+
 resource "yandex_compute_instance" "web" {
   count = 2
 
-  name = "web-${count.index + 1}"
-  zone = "ru-central1-b"
+  name        = "web-${count.index + 1}"
+  zone        = "ru-central1-a"
   platform_id = "standard-v3"
+  folder_id   = var.folder_id
 
   resources {
     cores         = 2
     memory        = 1
     core_fraction = 20
-    size          = 10
-    type          = "network-hdd"
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd80mrhj8fl2oe87o4e1"  # стандартный Ubuntu
+      image_id = data.yandex_compute_image.default.id
+      size     = 10
+      type     = "network-hdd"
     }
   }
 
@@ -24,8 +29,13 @@ resource "yandex_compute_instance" "web" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.default.id  # твоя подсеть
+    subnet_id          = yandex_vpc_subnet.develop.id
     nat                = true
-    security_group_ids = [yandex_vpc_security_group.example_dynamic.id]
+    security_group_ids = [yandex_vpc_security_group.example.id]
   }
+
+  metadata = local.vm_metadata
+
+  depends_on = [yandex_compute_instance.db]
+
 }

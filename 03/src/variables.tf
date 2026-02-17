@@ -30,3 +30,55 @@ variable "vpc_name" {
   default     = "develop"
   description = "VPC network&subnet name"
 }
+
+###
+
+variable "vm_image_family" {
+  type        = string
+  default     = "ubuntu-2404-lts"
+}
+
+variable "vm_platform_id" {
+  type        = string
+  default     = "standard-v3"
+}
+
+variable "vm_preemptible" {
+  type        = bool
+  default     = true
+}
+
+variable "vm_disk_type" {
+  type    = string
+  default = "network-hdd"
+}
+
+###
+
+variable "each_vm" {
+  description = "Конфигурация DB"
+  type = list(object({
+    vm_name      = string
+    cpu          = number
+    ram          = number
+    disk_volume  = number
+    core_f       = number
+  }))
+
+  default = [
+    {
+      vm_name     = "main-db"
+      cpu         = 4
+      ram         = 4
+      core_f      = 20
+      disk_volume = 30
+    },
+    {
+      vm_name     = "replica-db"
+      cpu         = 2
+      ram         = 2
+      core_f      = 20
+      disk_volume = 20
+    }
+  ]
+}
