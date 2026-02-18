@@ -82,3 +82,26 @@ variable "each_vm" {
     }
   ]
 }
+
+###
+
+variable "vm_resource" {
+  type = map(object({
+    cores         = number
+    memory        = number
+    core_fraction = number
+    size          = number
+    type          = string
+  }))
+  default = {
+    vm1 = {
+      cores         = 2
+      memory        = 1
+      core_fraction = 20
+      size = 10
+      type="network-hdd"
+    }
+  }
+}
+
+###
