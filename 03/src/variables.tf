@@ -38,6 +38,10 @@ variable "vm_image_family" {
   default     = "ubuntu-2404-lts"
 }
 
+data "yandex_compute_image" "default" {
+  family = var.vm_image_family
+}
+
 variable "vm_platform_id" {
   type        = string
   default     = "standard-v3"

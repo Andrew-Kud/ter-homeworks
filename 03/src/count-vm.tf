@@ -1,7 +1,3 @@
-data "yandex_compute_image" "default" {
-  family = var.vm_image_family
-}
-
 resource "yandex_compute_instance" "web" {
   count = 2
 
