@@ -1,16 +1,22 @@
+#с внешним интернетом
+#[webservers]
+#%{~ for i in webservers ~}
+#${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} fqdn=${"i.hostname"}
+#%{~ endfor ~}
+
 [webservers]
 %{~ for i in webservers ~}
-${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} fqdn=${"i.hostname"}
+${i["name"]} ansible_host=${i["network_interface"][0]["ip_address"]} fqdn=${"i.hostname"}
 %{~ endfor ~}
 
 [databases]
 %{~ for i in databases ~}
-${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} fqdn=${"i.hostname"}
+${i["name"]} ansible_host=${i["network_interface"][0]["ip_address"]} fqdn=${"i.hostname"}
 %{~ endfor ~}
 
 [storage]
 %{~ for i in storage ~}
-${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} fqdn=${"i.hostname"}
+${i["name"]} ansible_host=${i["network_interface"][0]["ip_address"]} fqdn=${"i.hostname"}
 %{~ endfor ~}
 
 [all:vars]

@@ -1,16 +1,5 @@
-resource "yandex_compute_disk" "additional" {
-  count = 3
-
-  name     = "disk-${count.index + 1}"
-  zone     = var.default_zone
-  folder_id = var.folder_id
-  size     = 1
-  type     = "network-hdd"
-}
-
-
-resource "yandex_compute_instance" "storage" {
-  name        = "storage"
+resource "yandex_compute_instance" "bastion" {
+  name        = "bastion"
   zone        = var.default_zone
   platform_id = var.vm_platform_id
   folder_id   = var.folder_id
@@ -35,16 +24,9 @@ resource "yandex_compute_instance" "storage" {
 
   network_interface {
     subnet_id          = yandex_vpc_subnet.develop.id
-    nat                = false
+    nat                = true
     security_group_ids = [yandex_vpc_security_group.example.id]
   }
 
   metadata = local.vm_metadata
-
-  dynamic "secondary_disk" {
-    for_each = yandex_compute_disk.additional[*].id
-    content {
-      disk_id = secondary_disk.value
-    }
-  }
 }
