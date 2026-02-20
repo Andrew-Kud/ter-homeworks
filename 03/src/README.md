@@ -56,17 +56,20 @@
 ### Задание 8
 
 Исходник:
+```
 [webservers]
 %{~ for i in webservers ~}
 ${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"] platform_id=${i["platform_id "]}}
 %{~ endfor ~}
+```
 
 Исправлено:
+```
 [webservers]
 %{~ for i in webservers ~}
 ${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} platform_id=${i["platform_id"]}
 %{~ endfor ~}
-
+```
 <img width="1109" height="447" alt="8" src="https://github.com/user-attachments/assets/7c3f17b9-f96f-43ae-a587-c41fbec66908" />
 
 
