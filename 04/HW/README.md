@@ -47,6 +47,8 @@ terraform-docs markdown table . > README.md
 
 ---
 
+### Задание 3
+
 <img width="944" height="154" alt="3-1" src="https://github.com/user-attachments/assets/d57c58d4-447c-471e-8c96-6ca102cb6874" />
 
 <img width="1070" height="447" alt="3-2" src="https://github.com/user-attachments/assets/c7617dac-cdd1-4e39-b462-4188f3523f74" />
