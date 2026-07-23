@@ -1,0 +1,130 @@
+#terraform:
+
+terraform fmt
+terraform fmt -recursive
+
+terraform plan
+
+terraform apply -parallelism=1
+
+-----
+
+rm -rf .terraform .terraform.lock.hcl
+terraform init
+
+rm -f .terraform.lock.hcl
+rm -rf .terraform
+terraform init
+terraform init -upgrade
+terraform providers
+
+
+=====
+=====
+#Закомментировать/Раскомментировать выбранные строки:
+
+Ctrl + /
+
+
+=====
+=====
+#terraform docs:
+
+cd /tmp
+https://github.com/terraform-docs/terraform-docs/releases/download/v0.24.0/terraform-docs-v0.24.0-linux-amd64.tar.gz
+tar -xzf ./terraform-docs-v0.24.0-linux-amd64.tar.gz
+sudo install -m 0755 terraform-docs /usr/local/bin/terraform-docs
+terraform-docs --version
+
+cd ./vpc
+terraform-docs markdown table . > README.md
+
+=====
+=====
+#backup tfstate:
+
+terraform state pull > terraform.tfstate.before-task3.backup
+
+
+=====
+=====
+# Удаление - восстановление .tfstate:
+
+1.
+terraform state list
+- Запиши id
+
+2.
+
+Запиши id сети и подсети:
+
+terraform state show module.vpc_dev.yandex_vpc_network.network
+terraform state show module.vpc_dev.yandex_vpc_network.network | grep id
+
+terraform state show module.vpc_dev.yandex_vpc_subnet.subnet
+terraform state show module.vpc_dev.yandex_vpc_subnet.subnet | grep id
+
+
+
+Удаляй в порядке зависимости - подсеть - сеть:
+
+удалить подсеть из стейта (в облаке останется):
+terraform state rm module.vpc_dev.yandex_vpc_subnet.subnet
+
+удалить сеть из стейта (в облаке останется):
+terraform state rm module.vpc_dev.yandex_vpc_network.network
+
+
+3.
+
+Запиши id ВМ (тот, что над platform_id и под platform_id):
+
+terraform state show 'module.test-vm-1.yandex_compute_instance.vm[0]'
+terraform state show 'module.test-vm-1.yandex_compute_instance.vm[0]' | grep id
+
+terraform state show 'module.test-vm-2.yandex_compute_instance.vm[0]'
+terraform state show 'module.test-vm-2.yandex_compute_instance.vm[0]' | grep id
+
+Можно сохранить стейт конкретных ресурсов:
+terraform state show 'module.test-vm-1.yandex_compute_instance.vm[0]' > vm1-state-before-rm.txt
+terraform state show 'module.test-vm-2.yandex_compute_instance.vm[0]' > vm2-state-before-rm.txt
+
+
+удалить ВМ из стейта (в облаке останется):
+
+terraform state rm module.test-vm-1.yandex_compute_instance.vm[0]
+terraform state rm module.test-vm-2.yandex_compute_instance.vm[0]
+
+
+Останотся только data-источники:
+terraform state list
+# module.test-vm-1.data.yandex_compute_image.my_image
+# module.test-vm-2.data.yandex_compute_image.my_image
+
+
+4.
+Восстановление сети - импортируй в порядке зависимости - сеть - подсеть.
+
+id сети:
+terraform import module.vpc_dev.yandex_vpc_network.network enp74vas1fa1kir4b6nk
+
+id подсети:
+terraform import module.vpc_dev.yandex_vpc_subnet.subnet e9b2p7usugngl2cmimbh
+
+
+5.
+Восстановление ВМ:
+Забыл записать id ВМ, но бэкап сделал, вот так из бэкапа посмотреть id машин:
+нужен верхнеуровневый id ресурса, тот, что над "security_group_ids": null
+cat ./terraform.tfstate.before-task3.backup | grep id
+
+terraform import 'module.test-vm-1.yandex_compute_instance.vm[0]' fhmhln8oo751868oic7f
+
+terraform import 'module.test-vm-2.yandex_compute_instance.vm[0]' fhmbjaqmab435ojlgck4
+
+terraform state list
+
+terraform plan
+
+=====
+=====
