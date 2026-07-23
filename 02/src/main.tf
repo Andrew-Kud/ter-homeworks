@@ -46,6 +46,7 @@ data "yandex_compute_image" "web-image" {
 }
 resource "yandex_compute_instance" "web" {
   name        = local.web_vm_name
+  hostname    = local.web_vm_name
   platform_id = var.vm_web_platform_id
   resources {
     cores         = var.vms_resources.web.cores
@@ -77,6 +78,7 @@ data "yandex_compute_image" "db-image" {
 }
 resource "yandex_compute_instance" "db" {
   name        = local.db_vm_name
+  hostname    = local.db_vm_name
   platform_id = var.vm_db_platform_id
   zone        = var.vm_db_zone
   resources {

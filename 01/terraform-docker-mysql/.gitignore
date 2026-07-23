@@ -13,3 +13,14 @@ personal.auto.tfvars
 
 terraform.tfstate
 terraform.tfstate.backup
+
+crash.log
+crash.*.log
+
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+*.tfplan
+*plan.out
